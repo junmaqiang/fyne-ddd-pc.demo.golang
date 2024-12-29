@@ -1,0 +1,88 @@
+### 删除排除文件放入项目之前的提交
+### git rm --cached .idea/vcs.xml
+### git rm --cached .idea/modules.xml
+### git rm --cached .idea/go-project-template-app.iml
+### git rm --cached .idea/.gitignore
+### 自定义文件
+apisix_logs
+Dockerfile-apisix
+api/build-tools/apisix
+fyne-cross/**
+shz.app
+
+### 测试文件
+testdata/**
+
+### GO
+go.work
+go_build
+go.sum
+
+### macOS
+.DS_Store
+**/.DS_Store
+
+### js
+**/node_modules
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+### 输出文件
+output/
+dist/
+_dist/
+_scripts/log/
+_scripts/key/**
+dist-ssr
+build
+
+### 环境文件
+.env.development
+.env.testing
+*.local
+
+### 隐藏文件
+.githash
+.github/**
+.backup.yaml
+.firebase
+.eslintcache
+.umi
+.umi-production
+.history
+.temp/**
+
+### Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+Session.vim
+
+### JetBrains
+.idea/
+../.idea/
+
+### VSCode
+.vscode/
+
+### 后缀文件
+*.out
+*.log
+**/.*.swp
+*.pyc
+*.swo
+*.exe
+*.exe~
+*.dll
+*.so
+*.db
+*.bin
+*.dylib
+*.test
+*.bak
+/*.zip
+
+### Hugo
+/resources/_gen/
