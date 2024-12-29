@@ -1,12 +1,7 @@
-# This workflow will build a golang project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
-
-name: Go
-
+name: Build
 on:
   push:
     branches: [ "main" ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,17 +15,17 @@ jobs:
       with:
         go-version: '1.23'
 
-    - name: Build for Windows
-      run: GOOS=windows GOARCH=amd64 go build -o mypc-windows-amd64.exe
+#    - name: Build for Windows
+#      run: GOOS=windows GOARCH=amd64 go build -o mypc-windows-amd64.exe
+#
+#    - name: Build for macOS
+#      run: GOOS=darwin GOARCH=amd64 go build -o mypc-darwin-amd64
+#
+#    - name: Build for Linux
+#      run: GOOS=linux GOARCH=amd64 go build -o mypc-linux-amd64
 
-    - name: Build for macOS
-      run: GOOS=darwin GOARCH=amd64 go build -o mypc-darwin-amd64
-
-    - name: Build for Linux
-      run: GOOS=linux GOARCH=amd64 go build -o mypc-linux-amd64
-
-#    - name: Build
-#      run: go build -v ./...
+    - name: Build
+      run: go build -v ./...
 
 #    - name: Test
 #      run: go test -v ./...
@@ -47,3 +42,17 @@ jobs:
 #          Description of the release
 #        draft: false
 #        prerelease: false
+
+#  - name: Show Release Num
+#      run: |
+#        echo "通过GitHub-Action获取版本号： ${{ env.GITHUB_REF_NAME }}"
+#        echo "通过github-slug-action获取版本号： ${{ env.GITHUB_REF_NAME_SLUG }}"
+#
+#        - uses: wangyoucao577/go-release-action@v1.30
+#          with:
+#            github_token: ${{ secrets.GITHUB_TOKEN }} # 一个默认的变量，用来实现往 Release 中添加文件
+#            goos: ${{ matrix.goos }}
+#            goarch: ${{ matrix.goarch }}
+#            goversion: 1.18 # 可以指定编译使用的 Golang 版本
+#            binary_name: "hello" # 可以指定二进制文件的名称
+#            extra_files: LICENSE README.md # 需要包含的额外文件

@@ -1,0 +1,114 @@
+# 项目名称
+project_name: fyne-ddd-pc.demo.golang
+# 环境配置
+env:
+  - GO111MODULE=on
+# 编译前的钩子配置
+before:
+  hooks:
+    # - make clean
+    - go mod tidy
+    # - go mod download
+    # - go generate ./...
+    # - ./_scripts/manpages.sh
+    # - go install github.com/golang/mock/mockgen
+    # - touch {{ .Env.FILE_TO_TOUCH }}
+builds:
+  - id: '{{ .ProjectName }}-darwin-amd64'
+    ldflags: -s -w -X github.com/mailchain/mailchain/pkg/version.Version={{.Version}} -X github.com/mailchain/mailchain/pkg/version.BuildDate={{.Date}} -X github.com/mailchain/mailchain/pkg/version.CommitHash={{ .ShortCommit }}
+    binary: mypc
+    env:
+      - CGO_ENABLED=1
+      - CC=o64-clang
+      - CXX=o64-clang++
+    # main: ./cmd/mailchain/main.go
+    goos:
+      - darwin
+    goarch:
+      - amd64
+  - id: '{{ .ProjectName }}-linux-amd64'
+    ldflags: -s -w -X github.com/mailchain/mailchain/pkg/version.Version={{.Version}} -X github.com/mailchain/mailchain/pkg/version.BuildDate={{.Date}} -X github.com/mailchain/mailchain/pkg/version.CommitHash={{ .ShortCommit }}
+    binary: mailchain
+    env:
+      - CGO_ENABLED=1
+    # main: ./cmd/mailchain/main.go
+    goos:
+      - linux
+    goarch:
+      - amd64
+  - id: '{{ .ProjectName }}-windows-amd64'
+    ldflags: -s -w -X github.com/mailchain/mailchain/pkg/version.Version={{.Version}} -X github.com/mailchain/mailchain/pkg/version.BuildDate={{.Date}} -X github.com/mailchain/mailchain/pkg/version.CommitHash={{ .ShortCommit }}
+    binary: mailchain
+    env:
+      - CGO_ENABLED=1
+      - CC=x86_64-w64-mingw32-gcc
+      - CXX=x86_64-w64-mingw32-g++
+    # main: ./cmd/mailchain/main.go
+    goos:
+      - windows
+    goarch:
+      - amd64
+# 构建后存档配置
+archives:
+  - name_template: '{{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    # name_template: "{{.ProjectName}}_{{.Version}}_{{.Os}}-{{.Arch}}"
+    replacements:
+      darwin: macOS
+      linux: Linux
+      windows: Windows
+      386: 32_bit
+      amd64: 64_bit
+      arm: ARM
+      arm64: ARM64
+      openbsd: OpenBSD
+      netbsd: NetBSD
+      freebsd: FreeBSD
+      dragonfly: DragonFlyBSD
+    #
+    # 若设为 true 后，你解压 'goreleaser_Linux_arm64.tar.gz',
+    # 会得到 'goreleaser_Linux_arm64' 文件夹.
+    # 若设为 false, 所有文件都分离开来
+    wrap_in_directory: true
+    #
+    # 归档格式
+    format: tar.gz
+    # 还可根据 GOOSs，指定 归档格式.
+    # 常见情况是，window下为zip格式.
+    format_overrides:
+      - goos: windows
+        format: zip
+    #
+    builds_info:
+      group: root
+      owner: root
+    #
+    # 打包时要带入的文档
+    files:
+      - LICENSE.txt
+      - README.md
+      #- README_{{.Os}}.md
+      - CHANGELOG.md
+gomod:
+  proxy: true
+#release:
+#  disable: false
+# 只有github支持
+snapshot: # 生成压缩包名称前缀
+  name_template: "{{ .Version }}"
+  # name_template: "{{ .Tag }}-next"
+checksum:
+  name_template: "{{ .ProjectName }}-{{ .Version }}-checksums.txt"
+  # name_template: 'checksums.txt'
+source:
+  enabled: true
+  name_template: '{{ .ProjectName }}-sources'
+changelog: # 更新日志处理
+  sort: asc # 倒序
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^dev:'
+      - 'README'
+      - Merge pull request
+      - Merge branch
