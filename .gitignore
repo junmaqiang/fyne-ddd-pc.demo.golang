@@ -44,7 +44,6 @@ build
 
 ### 隐藏文件
 .githash
-.github/**
 .backup.yaml
 .firebase
 .eslintcache
