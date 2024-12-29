@@ -6,23 +6,44 @@ name: Go
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
+
     steps:
+    - name: Checkout code
     - uses: actions/checkout@v4
 
-    - name: Set up Go
+    - name: Set Go version
       uses: actions/setup-go@v4
       with:
         go-version: '1.23'
 
-    - name: Build
-      run: go build -v ./...
+    - name: Build for Windows
+      run: GOOS=windows GOARCH=amd64 go build -o mypc-windows-amd64.exe
 
-    - name: Test
-      run: go test -v ./...
+    - name: Build for macOS
+      run: GOOS=darwin GOARCH=amd64 go build -o mypc-darwin-amd64
+
+    - name: Build for Linux
+      run: GOOS=linux GOARCH=amd64 go build -o mypc-linux-amd64
+
+#    - name: Build
+#      run: go build -v ./...
+
+#    - name: Test
+#      run: go test -v ./...
+
+#    - name: Create Release
+#      id: create_release
+#      uses: actions/create-release@v4
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        tag_name: v1.0.0  # 根据您的版本号进行调整
+#        release_name: Release v1.0.0  # 发布的名称
+#        body: |
+#          Description of the release
+#        draft: false
+#        prerelease: false
